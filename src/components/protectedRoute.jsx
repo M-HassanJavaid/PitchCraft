@@ -11,6 +11,8 @@ const protectedRoute = ({children}) => {
     return <Loader />;
   }
 
+  console.log("ProtectedRoute - isLogin:", isLogin);
+
   if (!isLogin) {
     alert("You must be logged in to access this page.");
     return <Navigate to="/login" replace />;

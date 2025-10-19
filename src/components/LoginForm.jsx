@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState , useContext } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import app from '../config/firebase';
+import { AuthContext } from "../Context/authContext";
+
 
 const LoginForm = () => {
+
+  const { setIsLogin, setUser } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -35,6 +40,17 @@ const LoginForm = () => {
       );
       
       alert('Login successfull!')
+
+      // Update AuthContext
+      setIsLogin(true);
+      setUser({
+        name: userCredential.user.displayName,
+        email: userCredential.user.email,
+        uid: userCredential.user.uid
+      }); 
+      // Navigate to dashboard
+      navigate('/dashboard');
+
       
     } catch (error) {
       console.error('Login error:', error);

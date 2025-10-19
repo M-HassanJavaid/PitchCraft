@@ -5,6 +5,7 @@ import Login from './pages/Login'
 import Home from './pages/Home'
 import Dashboard from './pages/dashboard'
 import Loader from './components/Loader'
+import StartupData from './pages/startupData.jsx'
 
 import { AuthContext } from './Context/authContext'
 
@@ -73,10 +74,14 @@ function App() {
         </ProtectedRoute>
       )
     },
-    // {
-    //   path: '/check',
-    //   element: <Check tagline='This is kefkfnk dnjkfbdjkbg  djbgjfdbg jkdfbgjd fdjkgndfj kgnfnkgnf knhgjnhkn kgfnhklg nfkjhklfgjh gkfgklhmf gkhkjhkgfmn, v.mn.v.khgkh gtagline' name='This is name' onViewMore={()=>{console.log('You will beat anyone.') }}/>
-    // }
+    {
+      path:'/startup/:id',
+      element: (
+        <ProtectedRoute>
+          <StartupData />
+        </ProtectedRoute>
+      )
+    }
   ])
 
   return (
