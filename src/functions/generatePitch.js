@@ -31,6 +31,7 @@ export async function generateStartupPitch(idea, industry) {
         - Be concise but creative.
         - Use simple, human-friendly language.
         - Do not include backticks, markdown, or code formatting.
+        - Do not repeat any previous one.
         `;
 
         const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });

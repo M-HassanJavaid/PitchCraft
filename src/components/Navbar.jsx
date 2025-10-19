@@ -1,12 +1,30 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState , useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faCircleArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { AuthContext } from '../Context/authContext';
+import { getAuth, signOut } from 'firebase/auth';
+import app from '../config/firebase';
+
+const auth = getAuth(app);
 
 
 const Navbar = () => {
 
   const [NavOpen, setNavOpen] = useState(false)
+
+  const { setIsLogin , setUser } = useContext(AuthContext)
+
+  async function logout() {
+    try {
+      await signOut(auth);
+      setIsLogin(false);
+      setUser({ name: '', email: '', uid: '' });
+      alert('Logout successful!');
+    } catch (error) {
+      alert('Error during logout: ' + error.message);
+    }
+  }
 
 
   return (
@@ -19,6 +37,7 @@ const Navbar = () => {
           <li className='block my-1.5'><Link to='/'>Home</Link></li>
           <li className='block my-1.5'><Link to='/signup'>Signup</Link></li>
           <li className='block my-1.5'><Link to='/login'>Login</Link></li>
+          <li className='block my-1.5' onClick={logout}>Logout</li>
           <li className='block my-1.5'><Link to='/dashboard'>Dashboard</Link></li>
         </ul>
       </div>

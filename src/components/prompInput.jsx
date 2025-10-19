@@ -1,34 +1,25 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect , useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { generateStartupPitch } from "../functions/generatePitch";
 import Loader from "./Loader";
 import app from "../config/firebase";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { AuthContext } from "../Context/authContext";
+
 
 const db = getFirestore(app);
 const auth = getAuth(app);
 
+import savePitch from "../functions/savePitchToDb";
+
 const PromptInput = () => {
+  const {user} = useContext(AuthContext);
   const [input, setInput] = useState({ idea: "", industry: "" });
   const [isGenerating, setIsGenerating] = useState(false);
-  const [user, setUser] = useState(null);
-  const [loadingAuth, setLoadingAuth] = useState(true);
   const navigate = useNavigate();
 
   // Monitor auth state - redirect if not logged in
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-      } else {
-        navigate("/login");
-      }
-      setLoadingAuth(false);
-    });
-    return () => unsubscribe();
-  }, [navigate]);
 
   function handleChange(e) {
     let newInput = JSON.parse(JSON.stringify(input));
@@ -43,18 +34,16 @@ const PromptInput = () => {
         return alert("Field cannot be empty!");
       }
 
-      // Generate pitch using your AI function
+
       let data = await generateStartupPitch(input.idea, input.industry);
       console.log("Generated data:", data);
 
-      // ✅ SAVE TO FIRESTORE (user-specific)
-      await addDoc(collection(db, "ideas"), {
-        ...data,
-        email: user.email, // Links to current user
-        createdAt: new Date(),
-        ideaInput: input.idea,
-        industry: input.industry,
-      });
+
+      if (!user || !user.email) {
+        throw new Error("User not authenticated");
+      }
+
+      await savePitch(data , user.email);
 
       console.log("✅ Idea saved to Firebase!");
       alert("🎉 Startup pitch generated & saved! Redirecting to dashboard...");
@@ -71,11 +60,6 @@ const PromptInput = () => {
     }
   }
 
-  // Show loader while checking auth
-  if (loadingAuth) {
-    return <Loader />;
-  }
-
   // Show loader during generation
   if (isGenerating) {
     return <Loader />;
@@ -83,7 +67,7 @@ const PromptInput = () => {
 
   return (
     <div className="min-h-[calc(100vh-80px)] flex items-center justify-center bg-black p-4">
-      <div className="w-full max-w-lg bg-black text-white rounded-2xl shadow-2xl shadow-amber-500 p-8 glass border-2 border-white/20">
+      <div className="w-full max-w-lg bg-black text-white rounded-2xl shadow-2xl shadow-amber-500 p-8 glass border-2 border-white border-4">
         <h1 className="text-3xl font-semibold text-center mb-6">
           PitchCraft – AI Startup Partner
         </h1>

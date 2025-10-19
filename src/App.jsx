@@ -1,33 +1,90 @@
-import { useState } from 'react'
-import { createBrowserRouter , RouterProvider } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Signup from './pages/signup'
 import Login from './pages/Login'
 import Home from './pages/Home'
 import Dashboard from './pages/dashboard'
+import Loader from './components/Loader'
 
+import { AuthContext } from './Context/authContext'
+
+import { checkUserAuth } from './functions/checkAuth.js'
+
+import  ProtectedRoute  from './components/protectedRoute.jsx'
 
 function App() {
+
+  const [isLogin, setIsLogin] = useState(false);
+  const [user, setUser] = useState({ name: '', email: '', uid: '' })
+  const [isLoading, setIsLoading] = useState(true)
+
+  async function waitForUser() {
+    try {
+      let user = await checkUserAuth();
+      if (user) {
+        setIsLogin(true);
+        setUser({
+          name: user.displayName,
+          email: user.email,
+          uid: user.uid
+        });
+        console.log("User is logged in:", user);
+      }
+
+    } catch (error) {
+      alert("Error checking user authentication: " + error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    waitForUser();
+  }, [])
+
+
+  if (isLoading) {
+    return <Loader />
+  }
+
 
   const router = createBrowserRouter([
     {
       path: '/signup',
-      element: <Signup/>
+      element: <Signup />
     },
     {
       path: '/login',
-      element: <Login/>
+      element: <Login />
     },
     {
       path: '/',
-      element: <Home/>
+      element: (
+        <ProtectedRoute>
+          <Home />
+        </ProtectedRoute>
+      )
     },
     {
       path: '/dashboard',
-      element: <Dashboard/>
-    }
+      element: (
+        <ProtectedRoute>
+          <Dashboard />
+        </ProtectedRoute>
+      )
+    },
+    // {
+    //   path: '/check',
+    //   element: <Check tagline='This is kefkfnk dnjkfbdjkbg  djbgjfdbg jkdfbgjd fdjkgndfj kgnfnkgnf knhgjnhkn kgfnhklg nfkjhklfgjh gkfgklhmf gkhkjhkgfmn, v.mn.v.khgkh gtagline' name='This is name' onViewMore={()=>{console.log('You will beat anyone.') }}/>
+    // }
   ])
 
-  return <RouterProvider router={router} />
+  return (
+    <AuthContext.Provider value={{ isLogin, setIsLogin, user, setUser, isLoading, setIsLoading }}>
+      <RouterProvider router={router} />
+    </AuthContext.Provider>
+
+  )
 }
 
 export default App
