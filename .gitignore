@@ -24,5 +24,4 @@ dist-ssr
 *.sw?
 
 
-src/components/verifyEmail.jsx
-src/pages/getEmailVerification.jsx
+spare
