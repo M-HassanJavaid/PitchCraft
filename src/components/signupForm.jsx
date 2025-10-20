@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState  } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import app from '../config/firebase.js'
-import { Link } from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const auth = getAuth(app)
@@ -10,6 +10,8 @@ import { getFirestore, collection, addDoc } from "firebase/firestore";
 const db = getFirestore(app);
 
 const Signup = () => {
+
+  const navigate = useNavigate();
 
   function handleChange(e) {
     let newInput = JSON.parse(JSON.stringify(formData));
@@ -31,8 +33,10 @@ const Signup = () => {
         email: formData.email
       });
 
-      alert("Signup Successful")
-      setFormData({ name: '', email: '', password: '' })
+  alert("Signup Successful")
+  // redirect to login page
+  navigate('/login')
+  setFormData({ name: '', email: '', password: '' })
     } catch (error) {
       alert(error.message)
     } finally {

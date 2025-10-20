@@ -37,7 +37,7 @@ const Navbar = () => {
           <li className='block my-1.5'><Link to='/'>Home</Link></li>
           <li className='block my-1.5'><Link to='/signup'>Signup</Link></li>
           <li className='block my-1.5'><Link to='/login'>Login</Link></li>
-          <li className='block my-1.5' onClick={logout}>Logout</li>
+          <li className='block my-1.5 cursor-pointer' onClick={logout}>Logout</li>
           <li className='block my-1.5'><Link to='/dashboard'>Dashboard</Link></li>
         </ul>
       </div>
