@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+src/components/verifyEmail.jsx
+src/pages/getEmailVerification.jsx

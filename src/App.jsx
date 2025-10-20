@@ -6,6 +6,7 @@ import Home from './pages/Home'
 import Dashboard from './pages/dashboard'
 import Loader from './components/Loader'
 import StartupData from './pages/startupData.jsx'
+import VerifyEmail from './pages/getEmailVerification.jsx'
 
 import { AuthContext } from './Context/authContext'
 

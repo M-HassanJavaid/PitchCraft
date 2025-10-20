@@ -44,8 +44,8 @@ const dashboard = () => {
       <Navbar />
       {!isLoading && data.length === 0 && <h2 className='text-3xl font-semibold text-white text-center mt-10'>No Ideas Submitted Yet</h2>}
       {isLoading && <Loader />}
-      <div className='bg-black flex flex-wrap min-h-[calc(100vh-80px)] justify-center items-center gap-6 p-4'>
-        {!isLoading && data.map(idea => <DashboardCard key={idea.id} name={idea.name} tagline={idea.tagline} id={idea.id} />)}
+      <div className='bg-black flex flex-wrap min-h-[calc(100vh-80px)] flex-col gap-10 p-4'>
+        {!isLoading && data.map(idea => <DashboardCard key={idea.id} name={idea.startup_name} tagline={idea.tagline} id={idea.id} />)}
       </div>
     </>
   )

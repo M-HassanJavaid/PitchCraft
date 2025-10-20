@@ -6,7 +6,7 @@ const db = getFirestore(app);
 export default async function savePitch(pitch , email) {
     let ideasCollection = collection(db , 'ideas');
 
-    let newDoc = addDoc(ideasCollection , {
+    let newDoc = await addDoc(ideasCollection , {
         ...pitch,
         user: email
     });

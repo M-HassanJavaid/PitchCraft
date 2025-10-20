@@ -5,7 +5,7 @@ import { AuthContext } from '../Context/authContext'
 import Loader from './Loader'
 
 const protectedRoute = ({children}) => {
-  const { isLogin , isLoading } = useContext(AuthContext);
+  const { isLogin , isLoading , user} = useContext(AuthContext);
 
   if (isLoading) {
     return <Loader />;
@@ -14,8 +14,11 @@ const protectedRoute = ({children}) => {
   console.log("ProtectedRoute - isLogin:", isLogin);
 
   if (!isLogin) {
+    alert("You must be logged in to access this page.");
     return <Navigate to="/login" replace />;
   }
+
+  
 
   return children;
 
