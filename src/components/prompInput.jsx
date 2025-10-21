@@ -43,13 +43,13 @@ const PromptInput = () => {
         throw new Error("User not authenticated");
       }
 
-      await savePitch(data , user.email);
+      let id = await savePitch(data , user.email);
 
       console.log("✅ Idea saved to Firebase!");
       alert("🎉 Startup pitch generated & saved! Redirecting to dashboard...");
 
       // ✅ REDIRECT TO DASHBOARD
-      navigate(`/startup/${data.id}`);
+      navigate(`/startup/${id}`);
 
     } catch (error) {
       console.error("Error:", error);

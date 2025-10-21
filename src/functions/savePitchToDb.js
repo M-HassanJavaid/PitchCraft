@@ -13,4 +13,6 @@ export default async function savePitch(pitch , email) {
 
     console.log('Document has successfully added!')
     console.log(newDoc);
+
+    return newDoc.id;
 }
