@@ -49,7 +49,7 @@ const PromptInput = () => {
       alert("🎉 Startup pitch generated & saved! Redirecting to dashboard...");
 
       // ✅ REDIRECT TO DASHBOARD
-      navigate("/dashboard");
+      navigate(`/startupData/${data.id}`);
 
     } catch (error) {
       console.error("Error:", error);
