@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+@media (max-width : 1024px) {
+
+    .mobile-open-nav{
+        height: auto;
+    }
+
+    .closed-nav{
+        height: 0;
+    }
+
+}

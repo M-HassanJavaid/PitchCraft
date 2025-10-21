@@ -33,7 +33,7 @@ const Navbar = () => {
         <h1 className='italic text-3xl max-lg:order-2'>Pitch Craft</h1>
         <p className={`hidden max-lg:block max-lg:order-1 transition-all ${NavOpen ? 'rotate-180' : 'rotate-0'}`} onClick={() => setNavOpen(!NavOpen)} ><FontAwesomeIcon icon={faCircleArrowDown} className='text-4xl' /></p>
         <ul className={`flex text-nowrap gap-4 overflow-hidden transition-all max-lg:absolute max-lg:top-full max-lg:left-0 max-lg:w-full max-lg:bg-black max-lg:px-5 
-                       max-lg:justify-center max-lg:flex-wrap`} style={{ maxHeight: NavOpen ? '500px' : '0px' }}>
+                       max-lg:justify-center max-lg:flex-wrap ${NavOpen ? 'mobile-open-nav' : 'closed-nav'}`} >
           {isLogin && <li className='block my-1.5'><Link to='/'>Generate new</Link></li>}
           <li className='block my-1.5'><Link to='/signup'>Signup</Link></li>
           <li className='block my-1.5'><Link to='/login'>Login</Link></li>

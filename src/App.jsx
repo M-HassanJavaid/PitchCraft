@@ -19,6 +19,14 @@ function App() {
   const [user, setUser] = useState({ name: '', email: '', uid: '' })
   const [isLoading, setIsLoading] = useState(true)
 
+  // useEffect(() => {
+  //   first
+  
+    
+  // }, [third])
+  
+
+
   async function waitForUser() {
     try {
       let user = await checkUserAuth();
