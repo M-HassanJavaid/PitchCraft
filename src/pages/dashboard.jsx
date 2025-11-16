@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar'
 import DashboardCard from '../components/dashboardCard'
 import Loader from '../components/Loader'
 import app from '../config/firebase.js'
-import { getFirestore, collection, getDocs, where } from "firebase/firestore";
+import { getFirestore, collection, getDocs, where , query} from "firebase/firestore";
 const db = getFirestore(app);
 import { AuthContext } from '../Context/authContext'
 
@@ -12,11 +12,18 @@ import { AuthContext } from '../Context/authContext'
 const dashboard = () => {
 
   const { user } = useContext(AuthContext);
+  console.log(user)
 
 
   async function getData() {
     try {
-      let querySnapshot = await getDocs(collection(db, "ideas"), where("user", "==", user.email));
+      const q = query(
+        collection(db, "ideas"),
+        where("user", "==", user.email)
+      );
+
+      const querySnapshot = await getDocs(q);
+
       let ideas = [];
       querySnapshot.forEach((doc) => {
         ideas.push({ id: doc.id, ...doc.data() });
@@ -42,7 +49,7 @@ const dashboard = () => {
   return (
     <>
       <Navbar />
-      {!isLoading && data.length === 0 && <h2 className='text-3xl font-semibold text-white text-center mt-10'>No Ideas Submitted Yet</h2>}
+      {!isLoading && data.length === 0 && <h2 className='text-3xl bg-transparent p-4'>No Ideas Submitted Yet</h2>}
       {isLoading && <Loader />}
       <div className='bg-black flex flex-wrap min-h-[calc(100vh-80px)] flex-col gap-10 p-4'>
         {!isLoading && data.map(idea => <DashboardCard key={idea.id} name={idea.startup_name} tagline={idea.tagline} id={idea.id} />)}
