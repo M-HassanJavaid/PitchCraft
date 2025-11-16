@@ -36,7 +36,11 @@ const PromptInput = () => {
 
 
       let data = await generateStartupPitch(input.idea, input.industry);
-      console.log("Generated data:", data);
+
+      if (data.error) {
+        alert(data.error)
+        return;
+      }
 
 
       if (!user || !user.email) {
